@@ -1,2 +1,2 @@
 # python 3.7.7
-PyAutoGUI==0.9.53
+selenium==4.5.0
