@@ -1,5 +1,8 @@
 import io
+import cv2
+import numpy as np
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import WebDriverException
 from webdriver_manager.chrome import ChromeDriverManager
 from PIL import Image
@@ -8,7 +11,7 @@ game_url = "chrome://dino"
 
 class Game():
     def __init__(self):
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     
     def open(self):
         try:
@@ -20,9 +23,12 @@ class Game():
         frame = self.driver.get_screenshot_as_png()
         return frame
 
-# if __name__ == "__main__":
-#     game = Game()
-#     game.open()
-#     frame = game.get_frame()
-#     img = Image.open(io.BytesIO(frame))
-#     img.show()
+if __name__ == "__main__":
+    game = Game()
+    game.open()
+    frame = game.get_frame()
+    img = Image.open(io.BytesIO(frame))
+    img_array = np.array(img)
+    cv2.imshow("screen", img_array)
+    cv2.waitKey()
+    
