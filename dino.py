@@ -33,6 +33,15 @@ class Game():
     def up(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_UP)
 
+    def down(self):
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_DOWN)
+
+    def get_crashed(self):
+        return self.driver.execute_script("return Runner.instance_.crashed")
+
+    def restart(self):
+        self.driver.execute_script("Runner.instance_.restart()")
+
     def get_frame(self):
         screenshot = self.driver.get_screenshot_as_png()
         with Image.open(io.BytesIO(screenshot)) as img:
@@ -51,6 +60,10 @@ if __name__ == "__main__":
     game.open()
     game.start()
     while True:
-        game.up()
-        frame = game.get_frame()
-        game.display(frame)
+        if game.get_crashed():
+            game.restart()
+        else:
+            game.up()
+            game.down()
+            frame = game.get_frame()
+            game.display(frame)
