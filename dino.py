@@ -28,19 +28,30 @@ class Game():
             pass
     
     def start(self):
-        self.up()
-
-    def up(self):
-        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_UP)
-
-    def down(self):
-        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_DOWN)
-
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.SPACE)
+    
     def get_crashed(self):
         return self.driver.execute_script("return Runner.instance_.crashed")
 
     def restart(self):
         self.driver.execute_script("Runner.instance_.restart()")
+
+    def do_nothing(self):
+        pass
+
+    def down(self):
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_DOWN)
+
+    def up(self):
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_UP)
+
+    def take_action(self, action_index):
+        if action_index == 0:
+            self.do_nothing()
+        elif action_index == 1:
+            self.down()
+        elif action_index == 2:
+            self.up()
 
     def get_frame(self):
         screenshot = self.driver.get_screenshot_as_png()
@@ -63,7 +74,8 @@ if __name__ == "__main__":
         if game.get_crashed():
             game.restart()
         else:
-            game.up()
-            game.down()
+            game.take_action(0)
+            game.take_action(1)
+            game.take_action(2)
             frame = game.get_frame()
             game.display(frame)
