@@ -22,7 +22,7 @@ class Model(nn.Module):
             nn.Flatten(),
             nn.Linear(6720, 256),
             nn.ReLU(inplace=True),
-            nn.Linear(256, 3),
+            nn.Linear(256, num_actions),
         )
     
     # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in) or (channels_in, height_in, width_in)
