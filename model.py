@@ -14,7 +14,6 @@ greedy_factor = 0.3
 class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
-        self.flatten = nn.Flatten()
         self.neural_network = nn.Sequential(
             nn.Conv2d(1, 16, 8, 4),
             nn.ReLU(inplace=True),
