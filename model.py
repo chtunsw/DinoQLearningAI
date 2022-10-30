@@ -24,7 +24,6 @@ class Model(nn.Module):
             nn.Linear(6720, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, 3),
-            nn.Softmax(1)
         )
     
     def forward(self, x):
