@@ -13,6 +13,7 @@ game_url = "chrome://dino"
 browser_position = (0, 0)
 browser_size = (512, 256)
 frame_resolution = (256, 128)
+num_actions = 3
 
 class Game():
     def __init__(self):
