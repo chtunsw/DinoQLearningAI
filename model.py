@@ -25,6 +25,8 @@ class Model(nn.Module):
             nn.Linear(256, 3),
         )
     
+    # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in) or (channels_in, height_in, width_in)
+    # here we use x with shape (current_batch_size, 1, frame_shape[0], frame_shape[1])
     def forward(self, x):
         logits = self.neural_network(x)
         return logits
