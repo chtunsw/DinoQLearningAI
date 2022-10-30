@@ -20,10 +20,11 @@ class Model(nn.Module):
             nn.ReLU(inplace=True),
             nn.Conv2d(16, 16, 4, 2),
             nn.ReLU(inplace=True),
-            nn.Linear(30, 256),
+            nn.Flatten(),
+            nn.Linear(6720, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, 3),
-            nn.Softmax(num_actions)
+            nn.Softmax(1)
         )
     
     def forward(self, x):
@@ -39,6 +40,7 @@ def train():
     input = torch.randn(10, 1, 128, 256)
     # output = model.forward(torch.from_numpy(frame).type(torch.float32))
     output = model.forward(input)
+    print(output)
     print(output.shape)
 
     # for i in range(num_episodes):
