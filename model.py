@@ -72,6 +72,8 @@ def train():
             reward, next_state, game_over = game.take_action(action)
             game.display(next_state)
             memory_buffer.append([state, action, reward, next_state])
+            if len(memory_buffer) > memory_buffer_capacity:
+                memory_buffer.pop(0)
             if game_over:
                 game.restart()
                 break
