@@ -4,9 +4,9 @@ import numpy as np
 from torch import nn
 from dino import Game, num_actions, action_list
 
-num_episodes = 1e4
-maximum_episode_length = 1e10
-memory_buffer_capacity = 1e3
+num_episodes = int(1e4)
+maximum_episode_length = int(1e10)
+memory_buffer_capacity = int(1e3)
 discount_factor = 1
 soft_update_factor = 0.8
 update_per_timesteps = 10
@@ -43,6 +43,7 @@ def train():
     game = Game()
     memory_buffer = []
 
+    game.open()
     game.start()
 
     # state = game.get_frame()
@@ -68,6 +69,14 @@ def train():
             else:
                 output = model(get_frame_input(state))
                 action = torch.argmax(output).numpy()
+            reward, next_state, game_over = game.take_action(action)
+            game.display(next_state)
+            memory_buffer.append([state, action, reward, next_state])
+            if game_over:
+                game.restart()
+                break
+    
+    game.close()
 
 def test():
     pass

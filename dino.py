@@ -30,6 +30,9 @@ class Game():
         except WebDriverException:
             pass
     
+    def close(self):
+        self.driver.close()
+    
     def start(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.SPACE)
     
@@ -48,13 +51,17 @@ class Game():
     def up(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_UP)
 
-    def take_action(self, action_index):
-        if action_index == 0:
+    def take_action(self, action):
+        if action == 0:
             self.do_nothing()
-        elif action_index == 1:
+        elif action == 1:
             self.down()
-        elif action_index == 2:
+        elif action == 2:
             self.up()
+        next_state = self.get_frame()
+        game_over = self.get_crashed()
+        reward = -10 if game_over else 1
+        return reward, next_state, game_over
 
     def get_frame(self):
         screenshot = self.driver.get_screenshot_as_png()
