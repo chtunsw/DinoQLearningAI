@@ -15,6 +15,7 @@ browser_size = (512, 256)
 frame_resolution = (256, 128)
 frame_shape = (frame_resolution[1], frame_resolution[0])
 num_actions = 3
+action_list = [0, 1, 2]
 
 class Game():
     def __init__(self):
