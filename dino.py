@@ -36,7 +36,7 @@ class Game():
     def start(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.SPACE)
     
-    def get_crashed(self):
+    def is_crashed(self):
         return self.driver.execute_script("return Runner.instance_.crashed")
 
     def restart(self):
@@ -59,7 +59,7 @@ class Game():
         elif action == 2:
             self.up()
         next_state = self.get_frame()
-        game_over = self.get_crashed()
+        game_over = self.is_crashed()
         reward = -10 if game_over else 1
         return reward, next_state, game_over
 
@@ -81,7 +81,7 @@ if __name__ == "__main__":
     game.open()
     game.start()
     while True:
-        if game.get_crashed():
+        if game.is_crashed():
             game.restart()
         else:
             game.take_action(0)
