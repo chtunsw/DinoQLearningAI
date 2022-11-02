@@ -63,6 +63,9 @@ def train():
     for i in range(num_episodes):
         state = game.get_frame()
         for t in range(maximum_episode_length):
+            game.display(state)
+            
+            # take next action
             random_pick = random.uniform(0, 1) <= greedy_factor
             if random_pick:
                 action = random.choice(action_list)
@@ -70,19 +73,21 @@ def train():
                 output = model(get_frame_input(state))
                 action = torch.argmax(output).numpy()
             reward, next_state, game_over = game.take_action(action)
-            game.display(next_state)
             memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)
             
-            if t % update_per_timesteps == 0:
+            # train model
+            if (t + 1) % update_per_timesteps == 0:
                 batch = random.sample(memory_buffer, min(len(memory_buffer), batch_size))
                 x_batch = [e[0] for e in batch]
                 y_batch = [
                     e[2] if e[4] \
-                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))) \
+                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().numpy() \
                     for e in batch
                 ]
+                # print(x_batch)
+                # print(y_batch)
 
             if game_over:
                 game.restart()
