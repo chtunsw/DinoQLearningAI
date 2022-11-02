@@ -4,11 +4,11 @@ import numpy as np
 from torch import nn
 from dino import Game, num_actions, action_list
 
+learning_rate = 1e-2
 num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
 memory_buffer_capacity = int(1e3)
 discount_factor = 1
-soft_update_factor = 0.8
 update_per_timesteps = 10
 batch_size = 32
 greedy_factor = 0.3
@@ -39,6 +39,8 @@ def get_frame_input(frame):
     return frame_input
 
 def train():
+    loss_fn = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), learning_rate)
     model = Model()
     game = Game()
     memory_buffer = []
