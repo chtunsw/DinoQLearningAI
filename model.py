@@ -71,12 +71,24 @@ def train():
                 action = torch.argmax(output).numpy()
             reward, next_state, game_over = game.take_action(action)
             game.display(next_state)
-            memory_buffer.append([state, action, reward, next_state])
+            memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)
+            
+            if t % update_per_timesteps == 0:
+                batch = random.sample(memory_buffer, min(len(memory_buffer), batch_size))
+                x_batch = [e[0] for e in batch]
+                y_batch = [
+                    e[2] if e[4] \
+                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))) \
+                    for e in batch
+                ]
+
             if game_over:
                 game.restart()
                 break
+
+            state = next_state
     
     game.close()
 
