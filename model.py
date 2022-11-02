@@ -39,10 +39,11 @@ def get_frame_input(frame):
     return frame_input
 
 def train():
-    loss_fn = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), learning_rate)
     model = Model()
     game = Game()
+
+    loss_fn = nn.MSELoss()
+    optimizer = torch.optim.Adam(model.parameters(), learning_rate)
     memory_buffer = []
 
     game.open()
