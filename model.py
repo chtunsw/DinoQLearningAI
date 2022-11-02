@@ -49,20 +49,6 @@ def train():
     game.open()
     game.start()
 
-    # state = game.get_frame()
-    # output = model(get_frame_input(state))
-    # print(output)
-    # action = torch.argmax(output).numpy()
-    # print(action)
-
-    # frame = game.get_frame()
-    # print(frame.shape)
-    # input = torch.randn(10, 1, 128, 256)
-    # output = model.forward(torch.from_numpy(frame).type(torch.float32))
-    # output = model.forward(input)
-    # print(output)
-    # print(output.shape)
-
     for i in range(num_episodes):
         state = game.get_frame()
         for t in range(maximum_episode_length):
@@ -91,6 +77,15 @@ def train():
                 ]
                 # print(x_batch)
                 # print(y_batch)
+
+                # Compute prediction and loss
+                # pred = model(X)
+                # loss = loss_fn(pred, y)
+
+                # Backpropagation
+                # optimizer.zero_grad()
+                # loss.backward()
+                # optimizer.step()
 
             if game_over:
                 game.restart()
