@@ -69,23 +69,26 @@ def train():
             # train model
             if (t + 1) % update_per_timesteps == 0:
                 batch = random.sample(memory_buffer, min(len(memory_buffer), batch_size))
-                x_batch = [e[0] for e in batch]
-                y_batch = [
+                x_batch = torch.stack([get_frame_input(e[0]) for e in batch]).squeeze(1)
+                y_batch = torch.tensor([
                     e[2] if e[4] \
                     else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().numpy() \
                     for e in batch
-                ]
-                # print(x_batch)
-                # print(y_batch)
+                ]).float()
 
                 # Compute prediction and loss
-                # pred = model(X)
-                # loss = loss_fn(pred, y)
+                pred = torch.max(model(x_batch), dim=-1)[0]
+                loss = loss_fn(pred, y_batch)
 
                 # Backpropagation
-                # optimizer.zero_grad()
-                # loss.backward()
-                # optimizer.step()
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
+                # print(x_batch)
+                # print(y_batch)
+                # print(pred)
+                # print(loss)
 
             if game_over:
                 game.restart()
