@@ -49,6 +49,10 @@ def train():
     model = Model()
     game = Game()
 
+    # load pretrained model
+    if (model_weights_path.exists()):
+        model.load_state_dict(torch.load(model_weights_path))
+
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), learning_rate)
     memory_buffer = []
@@ -115,6 +119,7 @@ def test():
     game = Game()
 
     model.load_state_dict(torch.load(model_weights_path))
+
     game.open()
     game.start()
 
