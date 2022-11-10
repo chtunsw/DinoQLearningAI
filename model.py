@@ -103,6 +103,7 @@ def train():
 
             state = next_state
         
+        # save model
         if (i + 1) % save_model_per_episodes == 0:
             print(f"save model on episode: {i}")
             torch.save(model.state_dict(), model_weights_path)
