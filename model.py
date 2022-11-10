@@ -95,7 +95,7 @@ def train():
                 # print(x_batch)
                 # print(y_batch)
                 # print(pred)
-                # print(loss)
+                print(f"episode: {i}, step: {t}, loss: {loss}")
 
             if game_over or t == maximum_episode_length - 1:
                 game.restart()
