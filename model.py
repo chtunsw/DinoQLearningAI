@@ -97,11 +97,15 @@ def train():
                 # print(pred)
                 # print(loss)
 
-            if game_over:
+            if game_over or t == maximum_episode_length - 1:
                 game.restart()
                 break
 
             state = next_state
+        
+        if (i + 1) % save_model_per_episodes == 0:
+            print(f"save model on episode: {i}")
+            torch.save(model.state_dict(), model_weights_path)
     
     game.close()
 
