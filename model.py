@@ -110,4 +110,19 @@ def train():
     game.close()
 
 def test():
+    model = Model()
+    game = Game()
+
+    model.load_state_dict(torch.load(model_weights_path))
+    game.open()
+    game.start()
+
+    while(True):
+        state = game.get_frame()
+        game.display(state)
+        output = model(get_frame_input(state))
+        action = torch.argmax(output).numpy()
+        _, _, game_over = game.take_action(action)
+        if game_over:
+            game.restart()
     pass
