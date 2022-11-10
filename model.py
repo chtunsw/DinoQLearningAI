@@ -125,4 +125,3 @@ def test():
         _, _, game_over = game.take_action(action)
         if game_over:
             game.restart()
-    pass
