@@ -3,6 +3,12 @@ import random
 import numpy as np
 from torch import nn
 from dino import Game, num_actions, action_list
+from pathlib import Path
+
+file_dir = Path(__file__).parent
+model_weights_file = "model_weights.pth"
+model_weights_dir = file_dir / "trained_model"
+model_weights_path = model_weights_dir / model_weights_file
 
 learning_rate = 1e-2
 num_episodes = int(1e4)
@@ -12,6 +18,7 @@ discount_factor = 1
 update_per_timesteps = 10
 batch_size = 32
 greedy_factor = 0.3
+save_model_per_episodes = 10
 
 class Model(nn.Module):
     def __init__(self):
