@@ -10,6 +10,8 @@ model_weights_file = "model_weights.pth"
 model_weights_dir = file_dir / "trained_model"
 model_weights_path = model_weights_dir / model_weights_file
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 learning_rate = 1e-2
 num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
@@ -57,11 +59,11 @@ class Model(nn.Module):
 
 # get frame input of shape (1, 1, frame_shape[0], frame_shape[1]) for model
 def get_frame_input(frame):
-    frame_input = torch.from_numpy(frame).type(torch.float32).unsqueeze(0).unsqueeze(0)
+    frame_input = torch.from_numpy(frame).type(torch.float32).unsqueeze(0).unsqueeze(0).to(device)
     return frame_input
 
 def train():
-    model = Model()
+    model = Model().to(device)
     game = Game()
 
     # load pretrained model
@@ -86,7 +88,7 @@ def train():
                 action = random.choice(action_list)
             else:
                 output = model(get_frame_input(state))
-                action = torch.argmax(output).numpy()
+                action = torch.argmax(output).to("cpu").numpy()
             reward, next_state, game_over = game.take_action(action)
             memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
@@ -98,12 +100,12 @@ def train():
                 x_batch = torch.stack([get_frame_input(e[0]) for e in batch]).squeeze(1)
                 y_batch = torch.tensor([
                     e[2] if e[4] \
-                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().numpy() \
+                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().to("cpu").numpy() \
                     for e in batch
-                ]).float()
+                ]).float().to(device)
 
                 # Compute prediction and loss
-                pred = torch.max(model(x_batch), dim=-1)[0]
+                pred = torch.max(model(x_batch), dim=-1)[0].to(device)
                 loss = loss_fn(pred, y_batch)
 
                 # Backpropagation
@@ -130,7 +132,7 @@ def train():
     game.close()
 
 def test():
-    model = Model()
+    model = Model().to(device)
     game = Game()
 
     model.load_state_dict(torch.load(model_weights_path))
@@ -142,7 +144,7 @@ def test():
         state = game.get_frame()
         game.display(state)
         output = model(get_frame_input(state))
-        action = torch.argmax(output).numpy()
+        action = torch.argmax(output).to("cpu").numpy()
         _, _, game_over = game.take_action(action)
         if game_over:
             game.restart()
