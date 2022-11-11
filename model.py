@@ -146,5 +146,6 @@ def test():
         output = model(get_frame_input(state))
         action = torch.argmax(output).to("cpu").numpy()
         _, _, game_over = game.take_action(action)
+        print(f"output: {output}, action: {action}")
         if game_over:
             game.restart()
