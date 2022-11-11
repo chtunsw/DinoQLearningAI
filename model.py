@@ -24,6 +24,7 @@ class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
         self.neural_network = nn.Sequential(
+            # Complex nn
             nn.Conv2d(1, 16, 4, 2),
             nn.MaxPool2d(2),
             nn.ReLU(inplace=True),
@@ -37,6 +38,15 @@ class Model(nn.Module):
             nn.Linear(768, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, num_actions),
+            # Simple nn
+            # nn.Conv2d(1, 16, 8, 4),
+            # nn.ReLU(inplace=True),
+            # nn.Conv2d(16, 16, 4, 2),
+            # nn.ReLU(inplace=True),
+            # nn.Flatten(),
+            # nn.Linear(6720, 256),
+            # nn.ReLU(inplace=True),
+            # nn.Linear(256, num_actions),
         )
     
     # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in)
@@ -110,7 +120,7 @@ def train():
                 game.restart()
                 break
 
-            state = next_state
+            state = game.get_frame()
         
         # save model
         if (i + 1) % save_model_per_episodes == 0:
