@@ -57,6 +57,12 @@ class Model(nn.Module):
         logits = self.neural_network(x)
         return logits
 
+# init weights and bias for nn layers
+def init_weights(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+        torch.nn.init.uniform_(m.weight, -0.01, 0.01)
+        torch.nn.init.constant_(m.bias, 0.01)
+
 # get frame input of shape (1, 1, frame_shape[0], frame_shape[1]) for model
 def get_frame_input(frame):
     frame_input = torch.from_numpy(frame).type(torch.float32).unsqueeze(0).unsqueeze(0).to(device)
@@ -77,6 +83,8 @@ def train():
     # load pretrained model
     if (model_weights_path.exists()):
         model.load_state_dict(torch.load(model_weights_path))
+    else:
+        model.apply(init_weights)
 
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), learning_rate)
