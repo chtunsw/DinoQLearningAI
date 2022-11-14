@@ -1,5 +1,6 @@
 import io
 import cv2
+import base64
 import numpy as np
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -12,7 +13,7 @@ from PIL import Image
 game_url = "chrome://dino"
 browser_position = (0, 0)
 browser_size = (512, 256)
-frame_resolution = (256, 128)
+frame_resolution = (128, 64)
 frame_shape = (frame_resolution[1], frame_resolution[0])
 num_actions = 3
 action_list = [0, 1, 2]
@@ -64,8 +65,9 @@ class Game():
         return reward, next_state, game_over
 
     def get_frame(self):
-        screenshot = self.driver.get_screenshot_as_png()
-        with Image.open(io.BytesIO(screenshot)) as img:
+        image_b64 = self.driver.execute_script("canvasRunner = document.getElementsByClassName('runner-canvas')[0]; \
+            return canvasRunner.toDataURL().substring(22)")
+        with Image.open(io.BytesIO(base64.b64decode(image_b64))) as img:
             img = img.convert("L").resize(frame_resolution)
             frame = np.array(img)
             return frame

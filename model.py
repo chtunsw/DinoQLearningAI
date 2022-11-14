@@ -46,7 +46,7 @@ class Model(nn.Module):
             nn.Conv2d(16, 16, 4, 2),
             nn.ReLU(inplace=True),
             nn.Flatten(),
-            nn.Linear(6720, 256),
+            nn.Linear(1344, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, num_actions),
         )
