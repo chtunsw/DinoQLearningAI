@@ -96,7 +96,7 @@ def train():
                 action = random.choice(action_list)
             else:
                 output = model(get_frame_input(state))
-                action = torch.argmax(output).to("cpu").numpy()
+                action = torch.argmax(output).to("cpu").numpy().item()
             reward, next_state, game_over = game.take_action(action)
             revise_memory(memory_buffer, game_over)
             memory_buffer.append([state, action, reward, next_state, game_over])
@@ -106,6 +106,7 @@ def train():
             # train model
             if (t + 1) % update_per_timesteps == 0:
                 batch = random.sample(memory_buffer, min(len(memory_buffer), batch_size))
+                action_batch = [e[1] for e in batch]
                 x_batch = torch.stack([get_frame_input(e[0]) for e in batch]).squeeze(1)
                 y_batch = torch.tensor([
                     e[2] if e[4] \
@@ -114,7 +115,7 @@ def train():
                 ]).float().to(device)
 
                 # Compute prediction and loss
-                pred = torch.max(model(x_batch), dim=-1)[0].to(device)
+                pred = model(x_batch)[torch.arange(len(action_batch)), action_batch].to(device)
                 loss = loss_fn(pred, y_batch)
 
                 # Backpropagation
