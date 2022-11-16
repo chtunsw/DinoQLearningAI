@@ -10,8 +10,6 @@ model_weights_file = "model_weights.pth"
 model_weights_dir = file_dir / "trained_model"
 model_weights_path = model_weights_dir / model_weights_file
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-
 learning_rate = 1e-2
 num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
@@ -65,7 +63,7 @@ def init_weights(m):
 
 # get frame input of shape (1, 1, frame_shape[0], frame_shape[1]) for model
 def get_frame_input(frame):
-    frame_input = torch.from_numpy(frame).type(torch.float32).unsqueeze(0).unsqueeze(0).to(device)
+    frame_input = torch.from_numpy(frame).type(torch.float32).unsqueeze(0).unsqueeze(0)
     return frame_input
 
 # update reward for previous memory when crashed because of the delay of feedback from environment
@@ -77,7 +75,7 @@ def revise_memory(memory_buffer, game_over):
             memory_buffer[i][2] = revise_reward
 
 def train():
-    model = Model().to(device)
+    model = Model()
     game = Game()
 
     # load pretrained model
@@ -104,7 +102,7 @@ def train():
                 action = random.choice(action_list)
             else:
                 output = model(get_frame_input(state))
-                action = torch.argmax(output).to("cpu").numpy().item()
+                action = torch.argmax(output).numpy().item()
             reward, next_state, game_over = game.take_action(action)
             revise_memory(memory_buffer, game_over)
             memory_buffer.append([state, action, reward, next_state, game_over])
@@ -118,12 +116,12 @@ def train():
                 x_batch = torch.stack([get_frame_input(e[0]) for e in batch]).squeeze(1)
                 y_batch = torch.tensor([
                     e[2] if e[4] \
-                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().to("cpu").numpy() \
+                    else e[2] + discount_factor * torch.max(model(get_frame_input(e[3]))).detach().numpy() \
                     for e in batch
-                ]).float().to(device)
+                ]).float()
 
                 # Compute prediction and loss
-                pred = model(x_batch)[torch.arange(len(action_batch)), action_batch].to(device)
+                pred = model(x_batch)[torch.arange(len(action_batch)), action_batch]
                 loss = loss_fn(pred, y_batch)
 
                 # Backpropagation
@@ -150,7 +148,7 @@ def train():
     game.close()
 
 def test():
-    model = Model().to(device)
+    model = Model()
     game = Game()
 
     model.load_state_dict(torch.load(model_weights_path))
@@ -162,7 +160,7 @@ def test():
         state = game.get_frame()
         game.display(state)
         output = model(get_frame_input(state))
-        action = torch.argmax(output).to("cpu").numpy()
+        action = torch.argmax(output).numpy()
         _, _, game_over = game.take_action(action)
         print(f"output: {output}, action: {action}")
         if game_over:
