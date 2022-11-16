@@ -10,14 +10,14 @@ model_weights_file = "model_weights.pth"
 model_weights_dir = file_dir / "trained_model"
 model_weights_path = model_weights_dir / model_weights_file
 
-learning_rate = 1e-2
+learning_rate = 1e-4
 num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
 memory_buffer_capacity = int(1e3)
 discount_factor = 1
 update_per_timesteps = 10
 batch_size = 100
-greedy_factor = 0.3
+greedy_factor = 0.1
 save_model_per_episodes = 10
 
 class Model(nn.Module):
@@ -68,8 +68,8 @@ def get_frame_input(frame):
 
 # update reward for previous memory when crashed because of the delay of feedback from environment
 def revise_memory(memory_buffer, game_over):
-    revise_steps = 10
-    revise_reward = -5
+    revise_steps = 5
+    revise_reward = -0.5
     if game_over:
         for i in range(max(len(memory_buffer) - revise_steps, 0), len(memory_buffer)):
             memory_buffer[i][2] = revise_reward
@@ -104,7 +104,7 @@ def train():
                 output = model(get_frame_input(state))
                 action = torch.argmax(output).numpy().item()
             reward, next_state, game_over = game.take_action(action)
-            revise_memory(memory_buffer, game_over)
+            # revise_memory(memory_buffer, game_over)
             memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)

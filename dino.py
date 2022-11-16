@@ -61,7 +61,7 @@ class Game():
             self.up()
         next_state = self.get_frame()
         game_over = self.is_crashed()
-        reward = -10 if game_over else 1
+        reward = -1 if game_over else 0.1
         return reward, next_state, game_over
 
     def get_frame(self):
