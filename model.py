@@ -17,7 +17,8 @@ memory_buffer_capacity = int(1e3)
 discount_factor = 1
 update_per_timesteps = 10
 batch_size = 100
-greedy_factor = 0.1
+init_greedy_factor = 1e-1
+final_greedy_factor = 1e-3
 save_model_per_episodes = 10
 
 class Model(nn.Module):
@@ -97,6 +98,8 @@ def train():
             game.display(state)
             
             # take next action
+            greedy_factor = init_greedy_factor - \
+                (init_greedy_factor - final_greedy_factor) / num_episodes * i
             random_pick = random.uniform(0, 1) <= greedy_factor
             if random_pick:
                 action = random.choice(action_list)
