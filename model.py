@@ -15,7 +15,7 @@ num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
 memory_buffer_capacity = int(1e4)
 discount_factor = 1
-update_per_timesteps = 10
+update_per_timesteps = 100
 batch_size = 100
 init_greedy_factor = 1e-1
 final_greedy_factor = 1e-3
@@ -112,6 +112,8 @@ def train():
             memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)
+            
+            print(f"greedy_factor: {greedy_factor}, random_pick: {random_pick}, action: {action}, game_over: {game_over}")
             
             # train model
             if (t + 1) % update_per_timesteps == 0:
