@@ -68,12 +68,12 @@ def get_frame_input(frame):
     return frame_input
 
 # update reward for previous memory when crashed because of the delay of feedback from environment
-def revise_memory(memory_buffer, game_over):
-    revise_steps = 3
-    revise_reward = -0.5
-    if game_over:
-        for i in range(max(len(memory_buffer) - revise_steps, 0), len(memory_buffer)):
-            memory_buffer[i][2] = revise_reward
+# def revise_memory(memory_buffer, game_over):
+#     revise_steps = 3
+#     revise_reward = -0.5
+#     if game_over:
+#         for i in range(max(len(memory_buffer) - revise_steps, 0), len(memory_buffer)):
+#             memory_buffer[i][2] = revise_reward
 
 def train():
     model = Model()
