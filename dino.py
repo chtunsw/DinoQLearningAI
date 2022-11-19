@@ -13,7 +13,8 @@ from PIL import Image
 game_url = "chrome://dino"
 browser_position = (0, 0)
 browser_size = (512, 256)
-frame_resolution = (128, 64)
+# frame_resolution = (128, 64)
+frame_resolution = (64, 32)
 frame_shape = (frame_resolution[1], frame_resolution[0])
 num_actions = 3
 action_list = [0, 1, 2]
@@ -59,10 +60,10 @@ class Game():
             self.down()
         elif action == 2:
             self.up()
-        next_state = self.get_frame()
+        next_frame = self.get_frame()
         game_over = self.is_crashed()
         reward = -1 if game_over else 0.1
-        return reward, next_state, game_over
+        return reward, next_frame, game_over
 
     def get_frame(self):
         image_b64 = self.driver.execute_script("canvasRunner = document.getElementsByClassName('runner-canvas')[0]; \
