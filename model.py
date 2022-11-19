@@ -94,8 +94,8 @@ def train():
     game.start()
 
     for i in range(num_episodes):
-        state = game.get_frame()
         for t in range(maximum_episode_length):
+            state = game.get_frame()
             game.display(state)
             
             # take next action
@@ -143,8 +143,6 @@ def train():
             if game_over or t == maximum_episode_length - 1:
                 game.restart()
                 break
-
-            state = game.get_frame()
         
         # save model
         if (i + 1) % save_model_per_episodes == 0:
