@@ -85,9 +85,8 @@ if __name__ == "__main__":
     while True:
         if game.is_crashed():
             game.restart()
-        else:
-            game.take_action(0)
-            game.take_action(1)
-            game.take_action(2)
-            frame = game.get_frame()
-            game.display(frame)
+        game.take_action(0)
+        game.take_action(1)
+        game.take_action(2)
+        frame = game.get_frame()
+        game.display(frame)
