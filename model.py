@@ -121,7 +121,7 @@ def train():
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)
             
-            print(f"greedy_factor: {greedy_factor}, random_pick: {random_pick}, action: {action}, game_over: {game_over}")
+            # print(f"greedy_factor: {greedy_factor}, random_pick: {random_pick}, action: {action}, game_over: {game_over}")
             
             # train model
             if (t + 1) % update_per_timesteps == 0:
