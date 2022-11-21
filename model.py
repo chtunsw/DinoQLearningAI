@@ -94,8 +94,11 @@ def train():
     game.open()
     game.start()
 
+    total_steps = 0
+
     for i in range(num_episodes):
         for t in range(maximum_episode_length):
+            total_steps += 1
             frame = game.get_frame()
             game.display(frame)
 
@@ -124,7 +127,7 @@ def train():
             # print(f"greedy_factor: {greedy_factor}, random_pick: {random_pick}, action: {action}, game_over: {game_over}")
             
             # train model
-            if (t + 1) % update_per_timesteps == 0:
+            if total_steps % update_per_timesteps == 0:
                 batch = random.sample(memory_buffer, min(len(memory_buffer), batch_size))
                 action_batch = [e[1] for e in batch]
                 x_batch = torch.stack([get_state_input(e[0]) for e in batch]).squeeze(1)
