@@ -13,7 +13,6 @@ from PIL import Image
 game_url = "chrome://dino"
 browser_position = (0, 0)
 browser_size = (512, 256)
-# frame_resolution = (128, 64)
 frame_resolution = (64, 32)
 frame_shape = (frame_resolution[1], frame_resolution[0])
 num_actions = 3
