@@ -16,7 +16,7 @@ maximum_episode_length = int(1e10)
 memory_buffer_capacity = int(1e4)
 discount_factor = 1
 update_per_timesteps = 100
-batch_size = 100
+batch_size = 64
 init_greedy_factor = 1e-1
 final_greedy_factor = 1e-3
 save_model_per_episodes = 10
@@ -36,7 +36,7 @@ class Model(nn.Module):
             nn.MaxPool2d(2),
             nn.ReLU(inplace=True),
             nn.Flatten(),
-            nn.Linear(672, 256),
+            nn.Linear(3360, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, num_actions),
             # Simple nn
