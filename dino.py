@@ -36,16 +36,16 @@ class Game():
     
     def start(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.SPACE)
+
+    def restart(self):
+        self.driver.execute_script("return Runner.instance_.restart()")
     
     def is_crashed(self):
         return self.driver.execute_script("return Runner.instance_.crashed")
-
-    def restart(self):
-        self.driver.execute_script("Runner.instance_.restart()")
-
+    
     def do_nothing(self):
         pass
-
+    
     def down(self):
         self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ARROW_DOWN)
 
