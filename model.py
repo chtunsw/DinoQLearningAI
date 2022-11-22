@@ -36,7 +36,7 @@ class Model(nn.Module):
             nn.MaxPool2d(2),
             nn.ReLU(inplace=True),
             nn.Flatten(),
-            nn.Linear(3360, 256),
+            nn.Linear(1568, 256),
             nn.ReLU(inplace=True),
             nn.Linear(256, num_actions),
             # Simple nn
@@ -52,7 +52,7 @@ class Model(nn.Module):
     
     # Complex nn: take most recent 4 frames as input
     # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in)
-    # here we use x with shape (current_batch_size, 4, frame_shape[0], frame_shape[1])
+    # here we use x with shape (current_batch_size, 4, frame_shape[1], frame_shape[0])
     def forward(self, x):
         logits = self.neural_network(x)
         return logits
@@ -63,7 +63,7 @@ def init_weights(m):
         torch.nn.init.uniform_(m.weight, -0.01, 0.01)
         torch.nn.init.constant_(m.bias, 0.01)
 
-# get state input of shape (1, 4, frame_shape[0], frame_shape[1]) for model
+# get state input of shape (1, 4, frame_shape[1], frame_shape[0]) for model
 def get_state_input(state):
     state_input = torch.from_numpy(state).type(torch.float32).unsqueeze(0)
     return state_input
