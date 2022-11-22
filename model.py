@@ -68,14 +68,6 @@ def get_state_input(state):
     state_input = torch.from_numpy(state).type(torch.float32).unsqueeze(0)
     return state_input
 
-# update reward for previous memory when crashed because of the delay of feedback from environment
-# def revise_memory(memory_buffer, game_over):
-#     revise_steps = 3
-#     revise_reward = -0.5
-#     if game_over:
-#         for i in range(max(len(memory_buffer) - revise_steps, 0), len(memory_buffer)):
-#             memory_buffer[i][2] = revise_reward
-
 def train():
     model = Model()
     game = Game()
@@ -119,7 +111,6 @@ def train():
                 action = torch.argmax(output).numpy().item()
             reward, next_frame, game_over = game.take_action(action)
             next_state = np.append(state[1:, :, :], np.expand_dims(next_frame, axis=0), axis=0)
-            # revise_memory(memory_buffer, game_over)
             memory_buffer.append([state, action, reward, next_state, game_over])
             if len(memory_buffer) > memory_buffer_capacity:
                 memory_buffer.pop(0)
