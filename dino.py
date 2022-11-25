@@ -13,8 +13,7 @@ from PIL import Image
 game_url = "chrome://dino"
 browser_position = (0, 0)
 browser_size = (512, 256)
-resized_resolution = (128, 64)
-frame_resolution = (64, 64)
+frame_resolution = (128, 64)
 frame_shape = (frame_resolution[1], frame_resolution[0])
 action_list = [0, 1, 2]
 num_actions = len(action_list)
@@ -69,9 +68,8 @@ class Game():
         image_b64 = self.driver.execute_script("canvasRunner = document.getElementsByClassName('runner-canvas')[0]; \
             return canvasRunner.toDataURL().substring(22)")
         with Image.open(io.BytesIO(base64.b64decode(image_b64))) as img:
-            # resize and crop frame to pick necessary information
-            img = img.convert("L").resize(resized_resolution)
-            frame = np.array(img)[:frame_resolution[1], :frame_resolution[0]]
+            img = img.convert("L").resize(frame_resolution)
+            frame = np.array(img)
             return frame
 
     def display(self, frame):

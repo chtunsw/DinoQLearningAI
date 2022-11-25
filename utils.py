@@ -22,9 +22,9 @@ fh.setLevel(logging.INFO)
 logger.addHandler(fh)
 
 # save state as image
-def save_state_as_image(episode, timestep, state, action):
-    frames = np.concatenate((state[0], state[1], state[2], state[3]), axis=1)
-    state_filename = f"ep_{episode}_t_{timestep}_action_{action}.jpg"
+def save_state_as_image(episode, timestep, state, action, next_state, crashed):
+    frames = np.concatenate((state, next_state), axis=1)
+    state_filename = f"ep_{episode}_t_{timestep}_action_{action}_crashed_{crashed}.jpg"
     image = Image.fromarray(frames)
     image.save(states_dir / state_filename)
     
