@@ -163,7 +163,8 @@ def train():
         if (i + 1) % save_model_per_episodes == 0:
             average_steps = np.average(np.array(episode_steps)[-save_model_per_episodes:, 1])
             logger.info(f"save model on episode: {i}, average_steps: {average_steps} (in recent {save_model_per_episodes} games)")
-            torch.save(model.state_dict(), model_weights_path)
+            new_model_weights_path = model_weights_dir / f"model_weights_{i}.pth"
+            torch.save(model.state_dict(), new_model_weights_path)
     
     game.close()
 
