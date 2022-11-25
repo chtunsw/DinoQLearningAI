@@ -1,6 +1,5 @@
 import torch
 import random
-import time
 import numpy as np
 from torch import nn
 from pathlib import Path
