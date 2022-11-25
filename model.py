@@ -27,28 +27,29 @@ class Model(nn.Module):
     def __init__(self):
         super(Model, self).__init__()
         self.neural_network = nn.Sequential(
-            nn.Conv2d(1, 16, 8, 4),
-            nn.ReLU(inplace=True),
-            nn.Conv2d(16, 16, 4, 2),
-            nn.ReLU(inplace=True),
-            nn.Flatten(),
-            nn.Linear(1344, 256),
-            nn.ReLU(inplace=True),
-            nn.Linear(256, num_actions),
-            # Complex Model
-            # nn.Conv2d(1, 16, 4, 2),
-            # nn.MaxPool2d(2),
+            # Simple Model
+            # nn.Conv2d(1, 16, 8, 4),
             # nn.ReLU(inplace=True),
-            # nn.Conv2d(16, 32, 2, 1),
-            # nn.MaxPool2d(2),
-            # nn.ReLU(inplace=True),
-            # nn.Conv2d(32, 32, 2, 1),
-            # nn.MaxPool2d(2),
+            # nn.Conv2d(16, 16, 4, 2),
             # nn.ReLU(inplace=True),
             # nn.Flatten(),
-            # nn.Linear(672, 256),
+            # nn.Linear(1344, 256),
             # nn.ReLU(inplace=True),
             # nn.Linear(256, num_actions),
+            # Complex Model
+            nn.Conv2d(1, 16, 4, 2),
+            nn.MaxPool2d(2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(16, 32, 2, 1),
+            nn.MaxPool2d(2),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(32, 32, 2, 1),
+            nn.MaxPool2d(2),
+            nn.ReLU(inplace=True),
+            nn.Flatten(),
+            nn.Linear(672, 256),
+            nn.ReLU(inplace=True),
+            nn.Linear(256, num_actions),
         )
     
     # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in)
