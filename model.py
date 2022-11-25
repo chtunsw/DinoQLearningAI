@@ -2,10 +2,12 @@ import torch
 import random
 import numpy as np
 from torch import nn
-from dino import Game, num_actions, action_list
 from pathlib import Path
+from dino import Game, num_actions, action_list
+from logger import logger
 
 file_dir = Path(__file__).parent
+
 model_weights_file = "model_weights.pth"
 model_weights_dir = file_dir / "trained_model"
 model_weights_path = model_weights_dir / model_weights_file
@@ -140,7 +142,8 @@ def train():
                 # print(x_batch)
                 # print(y_batch)
                 # print(pred)
-                print(f"episode: {i}, step: {t}, loss: {loss}")
+                # print(f"episode: {i}, step: {t}, loss: {loss}")
+                logger.info(f"episode: {i}, step: {t}, loss: {loss}")
 
             if game_over or t == maximum_episode_length - 1:
                 game.restart()
