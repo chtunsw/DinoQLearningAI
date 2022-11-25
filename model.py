@@ -85,6 +85,7 @@ def train():
     optimizer = torch.optim.Adam(model.parameters(), learning_rate)
 
     memory_buffer = []
+    episode_steps = []
 
     game.open()
     game.start()
@@ -153,12 +154,15 @@ def train():
             print(f"frame_rate: {frame_rate}")
 
             if game_over or t == maximum_episode_length - 1:
+                logger.info(f"episode: {i}, episode_steps: {t}")
+                episode_steps.append([i, t])
                 game.restart()
                 break
         
         # save model
         if (i + 1) % save_model_per_episodes == 0:
-            print(f"save model on episode: {i}")
+            average_steps = np.average(np.array(episode_steps)[-save_model_per_episodes:, 1])
+            logger.info(f"save model on episode: {i}, average_steps: {average_steps} (in recent {save_model_per_episodes} games)")
             torch.save(model.state_dict(), model_weights_path)
     
     game.close()
