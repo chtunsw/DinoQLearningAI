@@ -5,7 +5,7 @@ import numpy as np
 from torch import nn
 from pathlib import Path
 from dino import Game, num_actions, action_list
-from logger import logger
+from utils import logger, save_state_as_image
 
 file_dir = Path(__file__).parent
 
@@ -149,6 +149,7 @@ def train():
             
             frame_end_time = time.time()
             frame_rate = 1 / (frame_end_time - frame_start_time)
+            # save_state_as_image(i, t, state, action)
             print(f"frame_rate: {frame_rate}")
 
             if game_over or t == maximum_episode_length - 1:
