@@ -2,3 +2,5 @@
 *
 # Except this file
 !.gitignore
+!train.log
+!validate.log
