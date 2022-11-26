@@ -6,20 +6,21 @@ from PIL import Image
 
 file_dir = Path(__file__).parent
 
-logs_file = "logs.log"
 logs_dir = file_dir / "logs"
-logs_path = logs_dir / logs_file
-
 states_dir = file_dir / "states"
 
-# create logger with "dino_ai"
-logger = logging.getLogger("dino_ai")
-logger.setLevel(logging.INFO)
-logger.addHandler(logging.StreamHandler(sys.stdout))
-# create file handler which logs info level messages
-fh = logging.FileHandler(logs_path)
-fh.setLevel(logging.INFO)
-logger.addHandler(fh)
+# get logger for "train" or "validate" mode
+def get_logger(mode):
+    # create logger
+    logger = logging.getLogger(mode)
+    logger.setLevel(logging.INFO)
+    logger.addHandler(logging.StreamHandler(sys.stdout))
+    # create file handler which logs info level messages
+    logs_path = logs_dir / f"{mode}.log"
+    fh = logging.FileHandler(logs_path)
+    fh.setLevel(logging.INFO)
+    logger.addHandler(fh)
+    return logger
 
 # save state as image
 def save_state_as_image(episode, timestep, state, action, next_state, crashed):

@@ -4,7 +4,7 @@ import numpy as np
 from torch import nn
 from pathlib import Path
 from dino import Game, num_actions, action_list
-from utils import logger, save_state_as_image
+from utils import get_logger, save_state_as_image
 
 file_dir = Path(__file__).parent
 
@@ -70,6 +70,7 @@ def get_state_input(state):
     return state_input
 
 def train():
+    logger = get_logger("train")
     model = Model()
     game = Game()
 
@@ -155,6 +156,7 @@ def train():
     game.close()
 
 def test():
+    logger = get_logger("test")
     model = Model()
     game = Game()
 
@@ -169,6 +171,6 @@ def test():
         output = model(get_state_input(frame))
         action = torch.argmax(output).numpy()
         _, _, game_over = game.take_action(action)
-        print(f"output: {output}, action: {action}")
+        logger.info(f"output: {output}, action: {action}")
         if game_over:
             game.restart()
