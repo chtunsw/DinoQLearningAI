@@ -204,10 +204,8 @@ def test():
 
     while(True):
         frame = game.get_frame()
-        game.display(frame)
         output = model(get_state_input(frame))
         action = torch.argmax(output).numpy()
         _, _, game_over = game.take_action(action)
-        print(f"output: {output}, action: {action}")
         if game_over:
             game.restart()
