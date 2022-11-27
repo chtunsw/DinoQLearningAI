@@ -15,3 +15,4 @@ After training for 10,000 episodes (16 hours on a 2017 Macbook Pro), with the be
 - Train for more episodes. (Maybe 100,000)
 - Remove unnecessary debug code (logs, display frame) to increase frame rate.
 - Train and save model in another process, so that it won't interrupt the sample process.
+- Save the model in time when the bot makes a new record in training process.
