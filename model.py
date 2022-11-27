@@ -4,7 +4,7 @@ import numpy as np
 from torch import nn
 from pathlib import Path
 from dino import Game, num_actions, action_list
-from utils import get_logger, save_state_as_image
+from utils import get_logger, get_top_models, save_state_as_image
 
 file_dir = Path(__file__).parent
 
@@ -22,6 +22,10 @@ batch_size = 64
 init_greedy_factor = 1e-1
 final_greedy_factor = 1e-3
 save_model_per_episodes = 10
+
+# validate params
+num_top_models = 100
+num_episodes_validate = int(2e1)
 
 class Model(nn.Module):
     def __init__(self):
@@ -148,12 +152,55 @@ def train():
         
         # save model
         if (i + 1) % save_model_per_episodes == 0:
-            average_steps = np.average(np.array(episode_steps)[-save_model_per_episodes:, 1])
+            average_steps = np.average(np.array(episode_steps)[-save_model_per_episodes:, 1].astype(np.float))
             logger.info(f"save model on episode: {i}, average_steps: {average_steps} (in recent {save_model_per_episodes} games)")
             new_model_weights_path = model_weights_dir / f"model_weights_{i}.pth"
             torch.save(model.state_dict(), new_model_weights_path)
     
     game.close()
+
+def validate():
+    logger = get_logger("validate")
+    model = Model()
+    game = Game()
+
+    model_episode_steps = []
+    model_validate_res = []
+    top_models = get_top_models(num_top_models)
+
+    game.open()
+    game.start()
+    
+    for m in top_models:
+        model.load_state_dict(torch.load(model_weights_dir / m))
+
+        for i in range(num_episodes_validate):
+            game_over = False
+            steps = 0
+            while(not game_over):
+                frame = game.get_frame()
+                game.display(frame)
+                output = model(get_state_input(frame))
+                action = torch.argmax(output).numpy()
+                _, _, game_over = game.take_action(action)
+                if game_over:
+                    model_episode_steps.append([m, i, steps])
+                    logger.info(f"model: {m}, episode: {i}, episode_steps: {steps}")
+                steps += 1
+            game.restart()
+        
+        model_steps = np.array(model_episode_steps)[-num_episodes_validate:, 2].astype(np.float)
+        average_steps = np.average(model_steps)
+        variance = np.var(model_steps)
+        
+        model_validate_res.append([m, average_steps, variance])
+        logger.info(f"model: {m}, average_steps: {average_steps}, variance: {variance}")
+    
+    game.close()
+
+    sorted_model_validate_res = sorted(model_validate_res, key=lambda res: (-res[1], res[2]))
+    logger.info(f"model ranking: {sorted_model_validate_res}")
+
 
 def test():
     logger = get_logger("test")

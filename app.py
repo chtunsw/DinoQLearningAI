@@ -1,6 +1,6 @@
 import sys
 from pathlib import Path
-from model import train, test
+from model import train, validate, test
 
 file_dir = Path(__file__).parent
 
@@ -15,6 +15,8 @@ if __name__ == "__main__":
         arg = args[0]
         if arg == "train":
             train()
+        elif arg == "validate":
+            validate()
         elif arg == "test":
             test()
         else:

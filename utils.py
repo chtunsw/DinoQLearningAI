@@ -1,5 +1,6 @@
 import sys
 import logging
+import re
 import numpy as np
 from pathlib import Path
 from PIL import Image
@@ -21,6 +22,17 @@ def get_logger(mode):
     fh.setLevel(logging.INFO)
     logger.addHandler(fh)
     return logger
+
+# get top models from train.log
+def get_top_models(num):
+    logs_path = logs_dir / f"train.log"
+    with open(logs_path, "r") as logs_file:
+        logs = logs_file.read()
+    pattern = re.compile("save model on episode: (.*), average_steps: (.*) \(in recent 10 games\)")
+    res = pattern.findall(logs)
+    top_records = sorted(res, key=lambda tup: float(tup[1]), reverse=True)[:num]
+    top_models = [f"model_weights_{r[0]}.pth" for r in top_records]
+    return top_models
 
 # save state as image
 def save_state_as_image(episode, timestep, state, action, next_state, crashed):
