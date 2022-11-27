@@ -24,6 +24,12 @@ After training for 10,000 episodes (16 hours on a 2017 Macbook Pro), with the be
 
 ## Instructions
 
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
 Train and save models:
 
 ```python
