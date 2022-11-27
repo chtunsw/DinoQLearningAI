@@ -48,7 +48,7 @@ class Model(nn.Module):
         )
     
     # Conv2d input shape: (current_batch_size, channels_in, height_in, width_in)
-    # here we use x with shape (current_batch_size, 1, frame_shape[1], frame_shape[0])
+    # here we use x with shape (current_batch_size, 1, frame_shape[0], frame_shape[1])
     def forward(self, x):
         logits = self.neural_network(x)
         return logits
@@ -59,7 +59,7 @@ def init_weights(m):
         torch.nn.init.uniform_(m.weight, -0.01, 0.01)
         torch.nn.init.constant_(m.bias, 0.01)
 
-# get state input of shape (1, 1, frame_shape[1], frame_shape[0]) for model
+# get state input of shape (1, 1, frame_shape[0], frame_shape[1]) for model
 def get_state_input(state):
     state_input = torch.from_numpy(state).type(torch.float32).unsqueeze(0).unsqueeze(0)
     return state_input
