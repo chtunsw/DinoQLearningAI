@@ -16,6 +16,32 @@ After training for 10,000 episodes (16 hours on a 2017 Macbook Pro), with the be
   <img src="assets/train_history.png" align="center" width="400">
 </p>
 
+## Environment
+
+- Device: 2017 Macbook Pro
+- Python: 3.7.7
+- Dependency: see [requirements.txt](requirements.txt)
+
+## Instructions
+
+Train and save models:
+
+```python
+python app.py train
+```
+
+Validate trained models:
+
+```python
+python app.py validate
+```
+
+Test with trained model:
+
+```python
+python app.py test
+```
+
 ## Some thoughts
 
 - Frame rate plays an important role in this project and it varies on different devices. The delay between `frame` and `next_frame` (state returned from the environment) should be short enough so that the model can get a real-time feedback.
