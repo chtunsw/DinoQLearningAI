@@ -191,7 +191,6 @@ def validate():
     sorted_model_validate_res = sorted(model_validate_res, key=lambda res: (-res[1], res[2]))
     logger.info(f"model ranking: {sorted_model_validate_res}")
 
-
 def test():
     model = Model()
     game = Game()
