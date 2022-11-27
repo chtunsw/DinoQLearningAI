@@ -130,7 +130,6 @@ def train():
                 # print(x_batch)
                 # print(y_batch)
                 # print(pred)
-                # print(f"episode: {i}, step: {t}, loss: {loss}")
                 logger.info(f"episode: {i}, step: {t}, loss: {loss}")
             
             # save_state_as_image(i, t, frame, action, next_frame, game_over)
