@@ -77,16 +77,16 @@ class Game():
         cv2.moveWindow("dino screen", browser_size[0], browser_position[1])
         cv2.waitKey(1)
 
-
-if __name__ == "__main__":
-    game = Game()
-    game.open()
-    game.start()
-    while True:
-        if game.is_crashed():
-            game.restart()
-        game.take_action(0)
-        game.take_action(1)
-        game.take_action(2)
-        frame = game.get_frame()
-        game.display(frame)
+# for test only
+# if __name__ == "__main__":
+#     game = Game()
+#     game.open()
+#     game.start()
+#     while True:
+#         if game.is_crashed():
+#             game.restart()
+#         game.take_action(0)
+#         game.take_action(1)
+#         game.take_action(2)
+#         frame = game.get_frame()
+#         game.display(frame)
