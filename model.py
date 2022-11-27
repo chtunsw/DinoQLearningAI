@@ -12,6 +12,7 @@ model_weights_file = "model_weights.pth"
 model_weights_dir = file_dir / "trained_model"
 model_weights_path = model_weights_dir / model_weights_file
 
+# train params
 learning_rate = 1e-4
 num_episodes = int(1e4)
 maximum_episode_length = int(1e10)
