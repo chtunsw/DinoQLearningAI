@@ -204,7 +204,6 @@ def validate():
 
 
 def test():
-    logger = get_logger("test")
     model = Model()
     game = Game()
 
@@ -219,6 +218,6 @@ def test():
         output = model(get_state_input(frame))
         action = torch.argmax(output).numpy()
         _, _, game_over = game.take_action(action)
-        logger.info(f"output: {output}, action: {action}")
+        print(f"output: {output}, action: {action}")
         if game_over:
             game.restart()
