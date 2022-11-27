@@ -192,10 +192,10 @@ def validate():
         
         model_steps = np.array(model_episode_steps)[-num_episodes_validate:, 2].astype(np.float)
         average_steps = np.average(model_steps)
-        variance = np.var(model_steps)
+        std = np.std(model_steps)
         
-        model_validate_res.append([m, average_steps, variance])
-        logger.info(f"model: {m}, average_steps: {average_steps}, variance: {variance}")
+        model_validate_res.append([m, average_steps, std])
+        logger.info(f"model: {m}, average_steps: {average_steps}, std: {std}")
     
     game.close()
 
