@@ -55,3 +55,9 @@ python app.py test
 - Train and save model in another process, so that it won't interrupt the sample process.
 - Save the model in time when the bot makes a new record in training process.
 - Try use more advanced variants of q-learning algorithm.
+
+## References
+
+- https://github.com/Paperspace/DinoRunTutorial
+- https://github.com/leeivan1007/DinoRunTutorial
+- https://github.com/DataSenseiAryan/T-RexDinoRunner-GAME-AI-BOT
