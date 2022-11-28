@@ -1,5 +1,6 @@
 import torch
 import random
+import time
 import numpy as np
 from torch import nn
 from pathlib import Path
@@ -87,6 +88,7 @@ def train():
 
     for i in range(num_episodes):
         for t in range(maximum_episode_length):
+            # frame_start_time = time.time()
             total_steps += 1
             frame = game.get_frame()
             game.display(frame)
@@ -133,6 +135,9 @@ def train():
                 logger.info(f"episode: {i}, step: {t}, loss: {loss}")
             
             # save_state_as_image(i, t, frame, action, next_frame, game_over)
+            # frame_end_time = time.time()
+            # frame_rate = 1 / (frame_end_time - frame_start_time)
+            # print(f"frame_rate: {frame_rate}")
 
             if game_over or t == maximum_episode_length - 1:
                 logger.info(f"episode: {i}, episode_steps: {t}")
