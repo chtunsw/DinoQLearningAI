@@ -10,7 +10,7 @@ This project builds a game bot for Chrome Dino Game using q-learning algorithm.
 
 ## Performance
 
-After training for 10,000 episodes (16 hours on a 2017 Macbook Pro), with the best model chosen from the validation process, the bot can get a stable 100+ score in most of games. The highest score this model got during the test was 834. And the average score it got in 20 games was 223.9 during validation process.
+After training for 10,000 episodes (16 hours on a 2017 Macbook Pro), with the best model chosen from the validation process, the bot can get a stable 100+ score in most of games. The highest score this model got during the test was 834. And the average score it got in 20 games was 158.1 during validation process.
 
 <p align="center">
   <img src="assets/train_history.png" width="400">
