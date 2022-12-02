@@ -1,4 +1,4 @@
-# Dino Q-Learning Bot
+# Dino Q-Learning AI
 
 ## Description
 
