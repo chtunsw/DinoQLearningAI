@@ -51,7 +51,7 @@ python app.py test
 ## Some thoughts
 
 - Frame rate plays an important role in this project and it varies on different devices. The delay between `frame` and `next_frame` (state returned from the environment) should be short enough so that the model can get a real-time feedback.
-- Some tutorials suggest using a sequence of frames as input, but it didn't work well for me. I suspect the unstable frame rate on my laptop was the reason, because samples of training data would have different frame rate from each other and the frame rate in the test process. Lack of training time might be another reason because it had a larger neural network.
+- Some tutorials suggest using a sequence of frames as input. In my experiment it didn't work out, possiblly due to the unstable frame rate. (Samples of training data would have different frame rate from each other and the frame rate in the test process.) Lack of training time might be another reason because it needed a larger neural network.
 - At the end of the training process, the performance was still at a rising trend. Maybe the model can get a better performance given more training time.
 
 ## Possible improvements
